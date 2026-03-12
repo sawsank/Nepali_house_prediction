@@ -17,17 +17,6 @@ If you're new to AI, here's the simple version of how this assistant helps you f
 
 ![Simple Workflow](workflow_simple.png)
 
-### 🧩 Technical Architecture (For Developers)
-#### 🌟 System Visual
-![Project Workflow](workflow.png)
-
-#### 🛠️ Tool Interaction Flow
-```mermaid
-    class Agent,ML_Select highlight;
-    class VDB,PKL archive;
-    class PKL success;
-```
-
 #### ⚖️ Decision & Data Flow
 Here is a technical flowchart detailing the internal logic and decision-making process:
 
