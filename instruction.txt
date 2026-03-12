@@ -1,0 +1,108 @@
+🏠 Nepal Real Estate Agentic RAG AI - User Guide
+===============================================
+
+Welcome to the Nepal Real Estate AI assistant! This tool combines a local knowledge base with live web search and machine learning to help you navigate the real estate market in Nepal.
+
+---
+
+🚀 1. Setup & Initialization
+---------------------------
+Follow these steps to get the environment ready and initialize the AI engine:
+
+### 🛠️ Part A: Environment Setup
+1. **Clone & Navigate**:
+   ```bash
+   git clone <repository-url>
+   cd project
+   ```
+2. **Virtual Environment**:
+   Create and activate a Python virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use: venv\Scripts\activate
+   ```
+3. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   > [!IMPORTANT]
+   > **macOS Users**: XGBoost requires the OpenMP runtime. If you see a `libxgboost.dylib` error, run:
+   ```
+   brew install libomp
+   ```
+
+4. **LM Studio Configuration**:
+   - Start LM Studio and load a model.
+   - Start the **Local Server** (usually at `http://localhost:1234`).
+5. **Data Preparation**:
+   - Ensure the `data/` folder contains your property CSV.
+6. **Launch Application**:
+   ```bash
+   streamlit run app.py
+   ```
+
+### 🧠 Part B: Machine Learning Initialization (Technical Steps)
+The first time you run the app (or when you force a retrain), the following pipeline is triggered:
+
+1. **Data Ingestion**: Loads the property dataset from the `data/` directory.
+2. **Data Cleaning**:
+   - **Price Normalization**: Converts strings (e.g., "Rs. 2.5 Cr") into raw numerical values.
+   - **Feature Extraction**: Parses numeric values from strings for Area, Floors, Road Access, etc.
+   - **Missing Values**: Handles gaps in locations and facings.
+3. **Feature Engineering**:
+   - **Amenity Counting**: Converts amenity lists into numeric counts.
+   - **Label Encoding**: Converts categorical text into numeric formats.
+4. **Model Training (The "AI Battle")**:
+   - Splits data into **80% Training** and **20% Testing** sets.
+   - Simultaneously trains 4 algorithms: **XGBoost, Random Forest, Decision Tree, and Linear Regression**.
+5. **Evaluation & Selection**:
+   - Calculates the **R² Score** (Accuracy) for each model.
+   - Automatically selects the model with the highest score as the "Champion".
+6.- **Auto-Persistence**: Once trained, the system saves the entire ML brain (Champion model, encoders, and metrics) into a single consolidated file: `saved_models/nepal_house_predictor.pkl`.
+- **Fast Load**: On subsequent runs, the app will automatically load this single file instead of retraining.
+
+> [!TIP]
+> To run the ML training pipeline standalone and see the "AI Battle" results, run:
+> ```bash
+> python -m src.ml_model
+> ```
+
+> streamlit cache clear #clear the cache
+---
+
+💬 2. Using the Agentic Chat
+---------------------------
+- **Local Knowledge**: Ask questions about house designs or price comparisons in specific Nepal locations.
+- **Web Search**: Ask about live market trends, taxes, or new regulations to trigger a real-time search.
+- **Transparency**: Expand the "Agent Thought Process" to see the AI's internal reasoning.
+
+---
+
+📊 3. Price Predictor & Model Storage
+------------------------------------
+- **Prediction**: Use the "Price Predictor" tab to get instant estimates based on property features.
+- **Auto-Persistence**: The best model is saved in `saved_models/`. Subsequent runs will load this instantly.
+- **Force Retrain**: To update the AI with new data, delete the `saved_models/` folder and restart the app.
+
+---
+
+📈 4. Data Insights (EDA)
+------------------------
+- Explore interactive charts for price distributions and location trends.
+- View the "AI Battle" results to see how the different models performed.
+
+---
+
+📥 5. Adding Knowledge
+---------------------
+- Use the "Add Knowledge" tab to contribute new property data or facts to the local vector database.
+
+---
+
+🛠️ 6. Troubleshooting
+--------------------
+- **Connection Error**: Verify LM Studio is running and responding.
+- **No Results**: Check the `data/` folder for the required CSV.
+- **Resetting**: Use the "Clear History" button in the sidebar to reset the agent's memory.
+
+Happy Exploring!

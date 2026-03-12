@@ -1,0 +1,39 @@
+# Technical Explanation: Nepal Real Estate Agentic RAG AI Workflow
+
+The technical flowchart (`workflow_technical.png`) is built to accurately represent the underlying Python implementation of this project. 
+Below is the step-by-step breakdown of how the visual maps to the code:
+
+### 1. The "Logic Gateway" (User Interface)
+The flow starts at the **Logic Gateway**, which corresponds to the Streamlit sidebar in `app.py` (Lines 118–122). 
+Here, the user's navigation choice determines which branch of the system is activated:
+*   **Branch A**: The Agentic Chat explorer.
+*   **Branch B**: The Machine Learning Price Predictor.
+
+### 2. Branch A: Agentic RAG Engine
+This flow describes the "Reasoning" system found in `src/agent.py`:
+*   **Retrieval**: The `HouseKnowledgeBase` tool queries the local ChromaDB vector store for specific property data.
+*   **Web Search**: The `duckduckgo_search` tool fetches real-time market trends, taxes, and regulations.
+*   **LLM (Brain)**: A local LLM (via LM Studio) acts as the central processor, synthesizing data from both tools to provide a coherent final response.
+*   **Note**: While the diagram shows a linear flow, the actual implementation uses a **Re-Act Agent**, 
+    meaning the LLM iterates (Thought -> Action -> Observation) until the final answer is reached.
+
+### 3. Branch B: Machine Learning Pipeline
+This maps directly to the `PricePredictor` class in `src/ml_model.py`:
+*   **Data Load**: The system ingests the raw property CSV from the `data/` folder.
+*   **Train 4 Models**: The pipeline simultaneously trains and evaluates four distinct algorithms:
+    - XGBoost
+    - Random Forest
+    - Decision Tree
+    - Linear Regression
+*   **Select Best R2**: The code automatically calculates the R² score (accuracy) for each and selects the highest-performing one as the "Champion."
+*   **Predict**: The Champion model is saved (persisted) and then used to generate a numerical price estimate based on user input.
+
+### 4. Data Persistence & Databases
+The system uses two distinct storage layers to balance performance and simplicity:
+*   **ChromaDB (Vector Database)**: Used for the Agentic RAG engine.
+    - **Why**: It allows for high-speed "Semantic Search," enabling the AI to find relevant property data even if the user doesn't use exact keywords. It is stored locally in `chroma_data/` for privacy and speed.
+*   **JSON (Market Logs)**: Used for the Autonomous Background Worker.
+    - **Why**: `market_findings.json` provides a lightweight, human-readable format for logging research. It is easy for the Streamlit dashboard to parse and display without the overhead of a complex relational database.
+
+### Summary
+The flowchart provides a high-level architectural view that aligns 100% with the logic flow defined in the source code, documenting how the system branches between reactive user interactions and proactive autonomous research.
