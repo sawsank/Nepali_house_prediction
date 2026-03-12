@@ -1,0 +1,10 @@
+cat <<'EOF' > .gitignore
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+chroma_data/
+saved_models/
+EOF
