@@ -65,3 +65,9 @@ streamlit run app.py
 - `src/vector_db.py`: Knowledge base indexing and retrieval (ChromaDB).
 - `data/`: Local real estate CSV datasets.
 - `chroma_data/`: Persistent vector store directory.
+- `screenshots/`: App screenshot assets for UI documentation and demo visuals.
+
+## 🖼️ Screenshots
+
+All current application UI screenshots are stored in the `screenshots/` folder. These images can be used for quick visual validation of the dashboard, agent flow, and predictive analytics screens.
+
